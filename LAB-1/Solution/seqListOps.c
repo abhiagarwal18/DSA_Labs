@@ -1,164 +1,132 @@
+/***********file:   Ops.c *********/
+
+
+//HAVE MODIFIED THE QUESTION FILES FOR SOLUTION
 #include <stdio.h>
+#include "storage.h"
 #include "compare.h"
 int nextfreeloc = 0;
+Store st;
 
-seqlist insert (Job , seqlist);
 
-seqlist createlist()
+//already implemented
+SeqList createlist()
 {
- seqlist sl;
- sl.head = nextfreeloc++;
- sl.size = 0;
- st[sl.head].next = -1;
- return (sl);
+    SeqList sl;
+    sl.head = nextfreeloc++;
+    sl.size = 0;
+    st[sl.head].next = -1;
+    return (sl);
+}
+
+//already implemented
+void printJob(Job j)
+{
+    printf("JOB ID = %d, Priority = %d, Execution time = %d, Arrival time = %d \n", j.id, j.pri, j.et, j.at);
+}
+
+//already implemented
+int inputJobs(JobList list)
+{
+    int i;
+    int size;
+
+    printf("\n Size of list(no. of jobs) :");
+    scanf("%d", &size);
+
+    for (i = 0; i < size; i++)
+    {
+        printf("\nEnter job ID");
+        scanf("%d", &list[i].id);
+        printf("Enter Priority (from 0 - 2)");
+        scanf("%d", &list[i].pri);
+        printf("\n Execution Time");
+        scanf("%d", &list[i].et);
+        printf("\n Arrival Time");
+        scanf("%d", &list[i].at);
+    }
+    return size;
 }
 
 
-void insertelements (joblist ele , seqarr s)
+//self implemented
+SeqList insert(Job j, SeqList sl)
 {
- int i;
- for (i=0;i<MAX;i++)
- {
-  switch(ele[i].pri)
-  {
-   case 0: s[0] = insert (ele[i],s[0]);
-           break;
-   case 1: s[1] = insert (ele[i],s[1]);
-           break;
-   case 2: s[2] = insert (ele[i],s[2]);
-           break;
-  }
- }
+    int i, temp;
+    for (i = sl.head; st[i].next != -1; i = st[i].next)
+    {
+        if (compare(st[st[i].next].ele, j) == GREATER)
+            break;
+    }
+    temp = nextfreeloc++;
+    st[temp].next = st[i].next;
+    st[temp].ele = j;
+    st[i].next = temp;
+    sl.size++;
+    return sl;
 }
 
-seqlist insert(Job j , seqlist sl)
+//self implemented
+void insertelements(JobList list, int size, SeqList s[])
 {
- int i,temp;
- for (i=sl.head ; st[i].next != -1 ; i=st[i].next)
- {
-  if (compare(st[st[i].next].ele , j) == GREATER)
-   break;
- }
- temp = nextfreeloc++;
- st[temp].next = st[i].next;
- st[temp].ele = j;
- st[i].next = temp;
- sl.size++;
- return sl;
+    for (int i = 2; i >= 0; i--)
+    {
+        for (int k = 0; k < size; k++)
+        {
+            Job j = list[k];
+            if (j.pri == i)
+            {
+                s[i] = insert(j, s[i]);
+            }
+        }
+    }
 }
 
-void printjob (Job j)
+void copy_sorted_ele(SeqList s[], JobList ele)
 {
- printf ("JOB ID = %d, Priority = %d, Execution time = %d, Arrival time = %d \n",j.id,j.pri,j.et,j.at);
+    int len = 0;
+    for (int i = 2; i >= 0; i--)//copying Priority-wise
+    {
+        Location k = st[s[i].head];
+        while (k.next != -1)
+        {
+            k = st[k.next];
+            ele[len++] = k.ele;
+        }
+    }
 }
 
 
-void printseqlist(seqlist sl)
+void printlist(SeqList sl)
 {
- int i;
- printf ("size of list = %d\n",sl.size);
- for (i=st[sl.head].next ; st[i].next != -1 ; i=st[i].next)
- {
-  printjob (st[i].ele);
- }
+    printf("size of list = %d\n", sl.size);
+    for (int i = st[sl.head].next; i != -1; i = st[i].next)
+    {
+        printJob(st[i].ele);
+    }
 }
 
-void printjoblist (joblist j)
+//self implemented
+void printJobList(JobList list, int size)
 {
- int i;
- for (i=0;i<MAX;i++)
- {
-  printjob (j[i]);
- }
+    for (int i = 0; i < size; i++)
+    {
+        printJob(list[i]);
+    }
 }
 
-void initialize_elements (joblist ele)
+
+void sortJobList(JobList list, int size)
 {
- int i,size;
- /*printf ("No of Jobs");
-  scanf ("%d",&size);
- for (i=0;i<10;i++)
- {
-  printf ("Enter job ID");
-  scanf ("%d",ele[i].id);
-  printf ("Enter Priority (from 0 - 2)");
-  scanf ("%d",ele[i].pri);
-  printf ("Execution Time");
-  scanf ("%d",ele[i].et);
-  printf ("Arrival Time");
-  scanf ("%d",ele[i].at);
- }*/
- i=0;
- ele[0].id=1;
- ele[0].pri=0;
- ele[0].at=1;
- ele[0].et=5;
- ele[1].id=2;
-  ele[1].pri=1;
-   ele[1].at=9;
-    ele[1].et=3;
-ele[2].id=3;
- ele[2].pri=2;
-  ele[2].at=11;
-   ele[2].et=12;
-ele[3].id=4;
- ele[3].pri=0;
-  ele[3].at=4;
-   ele[3].et=7;
-ele[4].id=5;
- ele[4].pri=1;
-  ele[4].at=8;
-   ele[4].et=2;
-ele[5].id=6;
- ele[5].pri=2;
-  ele[5].at=12;
-   ele[5].et=11;
-ele[6].id=7;
- ele[6].pri=0;
-  ele[6].at=3;
-   ele[6].et=9;
-ele[7].id=8;
- ele[7].pri=1;
-  ele[7].at=7;
-   ele[7].et=4;
-ele[8].id=9;
- ele[8].pri=2;
-  ele[8].at=13;
-   ele[8].et=10;
-ele[9].id=10;
- ele[9].pri=0;
-  ele[9].at=2;
-   ele[9].et=15;
-
-/* ele[0].pri = ele[3].pri = ele[6].pri = PRI_0;
- ele[1].pri = ele[4].pri = ele[7].pri = PRI_1;
- ele[2].pri = ele[5].pri = ele[8].pri = ele[9].pri = PRI_2;
- for (i=0;i<MAX;i++)
- {
-  ele[i].id = i+1;
-  ele[i].et = i+2;
-  ele[i].at = i;
- }
- ele[2].at = 10;
- ele[5].at = 1;
- ele[6].at = 5;*/
+    SeqList seq[3];
+    seq[0] = createlist();
+    seq[1] = createlist();
+    seq[2] = createlist();
+    insertelements(list, size, seq);
+    /* used for checking :-
+    printlist(seq[0]);
+    printlist(seq[1]);
+    printlist(seq[2]);
+    */
+    copy_sorted_ele(seq, list);
 }
-
-void copy_sorted_ele(seqarr s , joblist ele)
-{
- int i,j;
- int index = 0;
- printf ("\n \n");
- for (i=2 ; i>=0 ; i--)
- {
-  for (j=st[s[i].head].next ; st[j].next != -1; j = st[j].next)
-  {
-   ele[index] = st[j].ele;
-   //printjob(ele[index]);
-   index++;
-  }  
-  ele[index] = st[j].ele; 
-  index++;
- }
-}
-

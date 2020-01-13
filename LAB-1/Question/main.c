@@ -6,11 +6,11 @@ int main(void)
 {
  int i; int size;
  JobList list;
- size = initialize_elements (list);
- printf("The Jobs waiting on CPU are:\n");
+ size = inputJobs(list);
+ printf("Jobs are :\n");
  printJobList(list, size);
  sortJobList(list, size);
- printf("The Jobs after sorting are:\n");
+ printf("sorted jobs are :\n");
  printJobList(list, size);
  return 0;
 }
