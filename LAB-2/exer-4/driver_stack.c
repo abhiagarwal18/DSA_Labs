@@ -4,7 +4,7 @@
 /*#include"linkedlist.h"*/
 int main(int argc, char * argv[]){
     FILE *fileptr = fopen(argv[1],"r");
-    struct stack * head= (struct stack *) malloc(sizeof(struct stack));
+    struct linkedList * head= (struct linkedList *) malloc(sizeof(struct linkedList));
     head->first=NULL;
     while(!feof(fileptr)){
         int temp;
@@ -14,7 +14,7 @@ int main(int argc, char * argv[]){
 
     }
     fclose(fileptr);
-    printlist(head);
+    printlist(head);//if want to use this then link linkedList.c too 
     printf("popping now \n");
     while(head->count!=0){
         struct node * temp = (struct node *) malloc(sizeof(struct node));
