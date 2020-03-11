@@ -1,0 +1,4 @@
+iterative : size = 1024 time = 0.192 ms
+iterative : size = 2048 time = 0.231 ms
+iterative : size = 4096 time = 0.752000 ms
+iterative : size = 10240 time = 1.441 ms

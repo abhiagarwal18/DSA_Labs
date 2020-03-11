@@ -1,0 +1,7 @@
+size = 100 time = 0.01800 ms
+size = 1000 time = 2.442 ms
+size = 10000 time = 139.617 ms
+size = 20000 time = 574.091 ms
+size = 50000 time = 3692.919 ms
+size = 80000 time = 10174.284 ms
+size = 100000 time = 16864.277 ms

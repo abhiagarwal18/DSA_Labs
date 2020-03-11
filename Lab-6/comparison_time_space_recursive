@@ -1,0 +1,5 @@
+recursive : size = 1024 time = 0.198 ms space = 50544 bytes
+recursive : size = 2048 time = 0.262 ms space = 99824 bytes
+recursive : size = 4096 time = 0.709 ms space = 198256 bytes
+recursive : size = 10240 time= 1.382 ms space = 493456 bytes
+
